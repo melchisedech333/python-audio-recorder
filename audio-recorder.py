@@ -1,7 +1,7 @@
 
 # IHS <3
 
-from pynput.keyboard import Key, Listener
+from   pynput.keyboard import Key, Listener
 import time, os, threading
 import pyaudio, wave
 
@@ -12,6 +12,7 @@ frames      = []
 rate        = 44100
 stream      = None
 thread_rec  = 0
+
 
 def main():
     os.system('clear')
@@ -24,6 +25,7 @@ def main():
     with Listener(on_press=on_press) as listener:
         listener.join()
 
+
 def on_press(key):
     global rec
 
@@ -35,6 +37,7 @@ def on_press(key):
     except AttributeError:
         if key == Key.esc:
             os._exit(0)
+
 
 def task():
     global rec, stop, thread_rec
@@ -67,21 +70,21 @@ def task():
 
         time.sleep(1)
 
+
 def start_recording():
     global p, rate, frames, stream, stop, thread_rec
 
     while True:
         if thread_rec == 1:
             thread_rec = 0
-            chunk  = 1024
-            stream = p.open(format            = pyaudio.paInt16,
-                            channels          = 1,
-                            rate              = rate,
-                            input             = True,
-                            frames_per_buffer = chunk)
+            chunk      = 1024
+            stream     = p.open(format            = pyaudio.paInt16,
+                                channels          = 1,
+                                rate              = rate,
+                                input             = True,
+                                frames_per_buffer = chunk)
 
             print("Recording...")
-
             frames = []
             
             while True:
@@ -94,6 +97,7 @@ def start_recording():
 
         time.sleep(1)
 
+
 def stop_recording():
     global p, rate, frames, stream, stop
 
@@ -105,7 +109,6 @@ def stop_recording():
 
     stream.stop_stream()
     stream.close()
-    # p.terminate()
 
     wf = wave.open("output.wav", 'wb')
     wf.setnchannels(1)
